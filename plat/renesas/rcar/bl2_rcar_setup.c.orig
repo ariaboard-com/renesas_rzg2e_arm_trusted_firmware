@@ -121,13 +121,8 @@
 
 /* R-Car Series, 3rd Generation product check */
 #if (RCAR_LSI == RCAR_H3) || (RCAR_LSI == RCAR_H3N)
-#if (RZG_HIHOPE_RZG2H) // RZG_HIHOPE_RZG2H
-#define TARGET_PRODUCT		RCAR_PRODUCT_H3
-#define TARGET_NAME		"RZ G2H"
-#else  // RZG_HIHOPE_RZG2H
 #define TARGET_PRODUCT		RCAR_PRODUCT_H3
 #define TARGET_NAME		"R-Car H3"
-#endif // RZG_HIHOPE_RZG2H
 #elif RCAR_LSI == RCAR_M3
 
 #if (RZG_HIHOPE_RZG2M) // RZG_HIHOPE_RZG2M
@@ -427,11 +422,7 @@ static void rcar_bl2_early_platform_setup(const meminfo_t *mem_layout)
 	const char *str;
 	const char *cpu_ca57        = "CA57";
 	const char *cpu_ca53        = "CA53";
-#if (RZG_HIHOPE_RZG2H) // RZG_HIHOPE_RZG2H
-	const char *product_h3      = "G2H";
-#else  // RZG_HIHOPE_RZG2H
 	const char *product_h3      = "H3";
-#endif // RZG_HIHOPE_RZG2H
 #if (RZG_HIHOPE_RZG2M) // RZG_HIHOPE_RZG2M
 	const char *product_m3      = "G2M";
 #else  // RZG_HIHOPE_RZG2M
@@ -561,15 +552,15 @@ static void rcar_bl2_early_platform_setup(const meminfo_t *mem_layout)
 #endif // RZG_HIHOPE_RZG2M
 		}
 	} else {
-#if (RZG_EK874 | RZG_HIHOPE_RZG2N | RZG_HIHOPE_RZG2M | RZG_HIHOPE_RZG2H) //RZG_EK874 | RZG_HIHOPE_RZG2N | RZG_HIHOPE_RZG2M | RZG_HIHOPE_RZG2H
+#if (RZG_EK874 | RZG_HIHOPE_RZG2N | RZG_HIHOPE_RZG2M) //RZG_EK874 | RZG_HIHOPE_RZG2N | RZG_HIHOPE_RZG2M
 		(void)sprintf(msg, "BL2: PRR is RZG %s Ver.%d.%d\n", str,
 			((prr_val & RCAR_MAJOR_MASK) >> RCAR_MAJOR_SHIFT)
 			 + RCAR_MAJOR_OFFSET, (prr_val & RCAR_MINOR_MASK));
-#else //RZG_EK874 | RZG_HIHOPE_RZG2N | RZG_HIHOPE_RZG2M | RZG_HIHOPE_RZG2H
+#else //RZG_EK874 | RZG_HIHOPE_RZG2N | RZG_HIHOPE_RZG2M
 		(void)sprintf(msg, "BL2: PRR is R-Car %s Ver.%d.%d\n", str,
 			((prr_val & RCAR_MAJOR_MASK) >> RCAR_MAJOR_SHIFT)
 			 + RCAR_MAJOR_OFFSET, (prr_val & RCAR_MINOR_MASK));
-#endif //RZG_EK874 | RZG_HIHOPE_RZG2N | RZG_HIHOPE_RZG2M | RZG_HIHOPE_RZG2H
+#endif //RZG_EK874 | RZG_HIHOPE_RZG2N | RZG_HIHOPE_RZG2M
 	}
 	NOTICE("%s", msg);
 
@@ -600,7 +591,6 @@ static void rcar_bl2_early_platform_setup(const meminfo_t *mem_layout)
 	case BOARD_EK874:
 	case BOARD_HIHOPE_RZG2N:
 	case BOARD_HIHOPE_RZG2M:
-	case BOARD_HIHOPE_RZG2H:
 		/* Do nothing. */
 		break;
 	default:
@@ -765,13 +755,6 @@ static void rcar_bl2_early_platform_setup(const meminfo_t *mem_layout)
         {
                 extern void bl2_enable_ecc_hihope_rzg2n(void);
                 bl2_enable_ecc_hihope_rzg2n();
-        }
-#endif
-
-#if (RZG_DRAM_HIHOPE_RZG2H_ECC == 1)
-        {
-                extern void bl2_enable_ecc_hihope_rzg2h(void);
-                bl2_enable_ecc_hihope_rzg2h();
         }
 #endif
 	if ((modemr_boot_dev == MODEMR_BOOT_DEV_EMMC_25X1) ||
@@ -948,9 +931,7 @@ void bl2_plat_flush_bl31_params(void)
 	uint32_t val;
 	uint32_t modemr;
 	uint32_t modemr_boot_dev;
-#if RCAR_SECURE_BOOT
 	uint32_t lcs;
-#endif
 
 	modemr = mmio_read_32(RCAR_MODEMR);
 	modemr_boot_dev = modemr & MODEMR_BOOT_DEV_MASK;
@@ -1021,7 +1002,6 @@ void bl2_plat_flush_bl31_params(void)
 	mmio_write_32(IPMMUMM_IMSCTLR, IPMMUMM_IMSCTLR_ENABLE);
 	mmio_write_32(IPMMUMM_IMAUXCTLR, IPMMUMM_IMAUXCTLR_NMERGE40_BIT);
 
-#if RCAR_SECURE_BOOT
 	val = ROM_GetLcs(&lcs);
 	if (val != 0U) {
 		ERROR("BL2: Failed to get the LCS. (%d)\n", val);
@@ -1033,7 +1013,6 @@ void bl2_plat_flush_bl31_params(void)
 			mmio_read_32(P_ARMREG_SEC_CTRL) & 
 				~((uint32_t)P_ARMREG_SEC_CTRL_PROT));
 	}
-#endif
 
 	/* disable the System WDT, FIQ and GIC	*/
 	bl2_swdt_release();

@@ -55,6 +55,29 @@ endif
 endif
 $(eval $(call add_define,RCAR_SA6_TYPE))
 
+#Process EK874 flag
+ifndef RZG_EK874
+RZG_EK874 := 0
+endif
+$(eval $(call add_define,RZG_EK874))
+
+#Process HIHOPE RZ/G2M flag
+ifndef RZG_HIHOPE_RZG2M
+RZG_HIHOPE_RZG2M := 0
+endif
+$(eval $(call add_define,RZG_HIHOPE_RZG2M))
+
+#Process HIHOPE RZ/G2N flag
+ifndef RZG_HIHOPE_RZG2N
+RZG_HIHOPE_RZG2N := 0
+endif
+$(eval $(call add_define,RZG_HIHOPE_RZG2N))
+
+#Process HIHOPE RZ/G2H flag
+ifndef RZG_HIHOPE_RZG2H
+RZG_HIHOPE_RZG2H := 0
+endif
+$(eval $(call add_define,RZG_HIHOPE_RZG2H))
 ###################################################
 
 #c compiler

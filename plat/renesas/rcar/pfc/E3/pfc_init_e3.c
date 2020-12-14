@@ -491,6 +491,27 @@ void pfc_init_e3(void)
 				  | MOD_SEL0_SCIF0_A
 				  | MOD_SEL0_SCIF2_A
 				  | MOD_SEL0_SPEED_PULSE_IF_A);
+#if RZG_EK874
+	pfc_reg_write(PFC_MOD_SEL1, MOD_SEL1_SIMCARD_A
+				  | MOD_SEL1_SSI2_A
+				  | MOD_SEL1_TIMER_TMU_A
+				  | MOD_SEL1_USB20_CH0_B
+				  | MOD_SEL1_DRIF2_A
+				  | MOD_SEL1_DRIF3_A
+				  | MOD_SEL1_HSCIF3_C /* for EK874 */
+				  | MOD_SEL1_HSCIF4_B /* for EK874 */
+				  | MOD_SEL1_I2C6_A
+				  | MOD_SEL1_I2C7_A
+				  | MOD_SEL1_MSIOF2_A
+				  | MOD_SEL1_MSIOF3_A
+				  | MOD_SEL1_SCIF3_A
+				  | MOD_SEL1_SCIF4_A
+				  | MOD_SEL1_SCIF5_A
+				  | MOD_SEL1_VIN4_A
+				  | MOD_SEL1_VIN5_A
+				  | MOD_SEL1_ADGC_A
+				  | MOD_SEL1_SSI9_A);
+#else	// RZG_EK874
 	pfc_reg_write(PFC_MOD_SEL1, MOD_SEL1_SIMCARD_A
 				  | MOD_SEL1_SSI2_A
 				  | MOD_SEL1_TIMER_TMU_A
@@ -510,8 +531,138 @@ void pfc_init_e3(void)
 				  | MOD_SEL1_VIN5_A
 				  | MOD_SEL1_ADGC_A
 				  | MOD_SEL1_SSI9_A);
+#endif	// RZG_EK874
 
 	/* initialize peripheral function select */
+#if RZG_EK874
+	pfc_reg_write(PFC_IPSR0, IPSR_28_FUNC(2)	/* HRX4_B */
+			       | IPSR_24_FUNC(2)	/* HTX4_B */
+			       | IPSR_20_FUNC(0)	/* QSPI1_SPCLK */
+			       | IPSR_16_FUNC(0)	/* QSPI0_IO3 */
+			       | IPSR_12_FUNC(0)	/* QSPI0_IO2 */
+			       | IPSR_8_FUNC(0)		/* QSPI0_MISO/IO1 */
+			       | IPSR_4_FUNC(0)		/* QSPI0_MOSI/IO0 */
+			       | IPSR_0_FUNC(0));	/* QSPI0_SPCLK */
+	pfc_reg_write(PFC_IPSR1, IPSR_28_FUNC(0)	/* AVB_RD2 */
+			       | IPSR_24_FUNC(0)	/* AVB_RD1 */
+			       | IPSR_20_FUNC(0)	/* AVB_RD0 */
+			       | IPSR_16_FUNC(0)	/* RPC_RESET# */
+			       | IPSR_12_FUNC(0)	/* RPC_INT# */
+			       | IPSR_8_FUNC(0)		/* QSPI1_SSL */
+			       | IPSR_4_FUNC(2)		/* HRX3_C */
+			       | IPSR_0_FUNC(2));	/* HTX3_C */
+	pfc_reg_write(PFC_IPSR2, IPSR_28_FUNC(1)	/* IRQ0 */
+			       | IPSR_24_FUNC(0)
+			       | IPSR_20_FUNC(0)
+			       | IPSR_16_FUNC(2)	/* AVB_LINK */
+			       | IPSR_12_FUNC(0)
+			       | IPSR_8_FUNC(0)		/* AVB_MDC */
+			       | IPSR_4_FUNC(0)		/* AVB_MDIO */
+			       | IPSR_0_FUNC(0));	/* AVB_TXCREFCLK */
+	pfc_reg_write(PFC_IPSR3, IPSR_28_FUNC(5)	/* DU_HSYNC */
+			       | IPSR_24_FUNC(0)
+			       | IPSR_20_FUNC(0)
+			       | IPSR_16_FUNC(0)
+			       | IPSR_12_FUNC(5)	/* DU_DG4 */
+			       | IPSR_8_FUNC(5)		/* DU_DOTCLKOUT0 */
+			       | IPSR_4_FUNC(5)		/* DU_DISP */
+			       | IPSR_0_FUNC(1));	/* IRQ1 */
+	pfc_reg_write(PFC_IPSR4, IPSR_28_FUNC(5)	/* DU_DB5 */
+			       | IPSR_24_FUNC(5)	/* DU_DB4 */
+			       | IPSR_20_FUNC(5)	/* DU_DB3 */
+			       | IPSR_16_FUNC(5)	/* DU_DB2 */
+			       | IPSR_12_FUNC(5)	/* DU_DG6 */
+			       | IPSR_8_FUNC(5)		/* DU_VSYNC */
+			       | IPSR_4_FUNC(5)		/* DU_DG5 */
+			       | IPSR_0_FUNC(5));	/* DU_DG7 */
+	pfc_reg_write(PFC_IPSR5, IPSR_28_FUNC(5)	/* DU_DR3 */
+			       | IPSR_24_FUNC(5)	/* DU_DB7 */
+			       | IPSR_20_FUNC(5)	/* DU_DR2 */
+			       | IPSR_16_FUNC(5)	/* DU_DR1 */
+			       | IPSR_12_FUNC(5)	/* DU_DR0 */
+			       | IPSR_8_FUNC(5)		/* DU_DB1 */
+			       | IPSR_4_FUNC(5)		/* DU_DB0 */
+			       | IPSR_0_FUNC(5));	/* DU_DB6 */
+	pfc_reg_write(PFC_IPSR6, IPSR_28_FUNC(5)	/* DU_DG1 */
+			       | IPSR_24_FUNC(5)	/* DU_DG0 */
+			       | IPSR_20_FUNC(5)	/* DU_DR7 */
+			       | IPSR_16_FUNC(1)	/* CANFD1_RX */
+			       | IPSR_12_FUNC(5)	/* DU_DR6 */
+			       | IPSR_8_FUNC(5)		/* DU_DR5 */
+			       | IPSR_4_FUNC(1)		/* CANFD1_TX */
+			       | IPSR_0_FUNC(5));	/* DU_DR4 */
+	pfc_reg_write(PFC_IPSR7, IPSR_28_FUNC(0)	/* SD0_CLK */
+			       | IPSR_24_FUNC(0)
+			       | IPSR_20_FUNC(5)	/* DU_DOTCLKIN0 */
+			       | IPSR_16_FUNC(5)	/* DU_DG3 */
+			       | IPSR_12_FUNC(1)	/* CAN_CLK */
+			       | IPSR_8_FUNC(1)		/* CANFD0_RX */
+			       | IPSR_4_FUNC(1)		/* CANFD0_TX */
+			       | IPSR_0_FUNC(5));	/* DU_DG2 */
+	pfc_reg_write(PFC_IPSR8, IPSR_28_FUNC(0)	/* SD1_DAT0 */
+			       | IPSR_24_FUNC(0)	/* SD1_CMD */
+			       | IPSR_20_FUNC(0)	/* SD1_CLK */
+			       | IPSR_16_FUNC(0)	/* SD0_DAT3 */
+			       | IPSR_12_FUNC(0)	/* SD0_DAT2 */
+			       | IPSR_8_FUNC(0)		/* SD0_DAT1 */
+			       | IPSR_4_FUNC(0)		/* SD0_DAT0 */
+			       | IPSR_0_FUNC(0));	/* SD0_CMD */
+	pfc_reg_write(PFC_IPSR9, IPSR_28_FUNC(0)	/* SD3_DAT2 */
+			       | IPSR_24_FUNC(0)	/* SD3_DAT1 */
+			       | IPSR_20_FUNC(0)	/* SD3_DAT0 */
+			       | IPSR_16_FUNC(0)	/* SD3_CMD */
+			       | IPSR_12_FUNC(0)	/* SD3_CLK */
+			       | IPSR_8_FUNC(0)		/* SD1_DAT3 */
+			       | IPSR_4_FUNC(0)		/* SD1_DAT2 */
+			       | IPSR_0_FUNC(0));	/* SD1_DAT1 */
+	pfc_reg_write(PFC_IPSR10, IPSR_24_FUNC(0)	/* SD0_CD */
+				| IPSR_20_FUNC(0)	/* SD3_DS */
+				| IPSR_16_FUNC(0)	/* SD3_DAT7 */
+				| IPSR_12_FUNC(0)	/* SD3_DAT6 */
+				| IPSR_8_FUNC(0)	/* SD3_DAT5 */
+				| IPSR_4_FUNC(0)	/* SD3_DAT4 */
+				| IPSR_0_FUNC(0));	/* SD3_DAT3 */
+	pfc_reg_write(PFC_IPSR11, IPSR_28_FUNC(0)
+				| IPSR_24_FUNC(8)	/* USB0_ID */
+				| IPSR_20_FUNC(2)	/* AUDIO_CLKOUT1_A */
+				| IPSR_16_FUNC(0)	/* CTS0#_A */ /* FIXME */
+				| IPSR_12_FUNC(0)
+				| IPSR_8_FUNC(0)
+				| IPSR_4_FUNC(0)	/* SD1_WP */
+				| IPSR_0_FUNC(0));	/* SD1_CD */
+	pfc_reg_write(PFC_IPSR12, IPSR_28_FUNC(0)
+				| IPSR_24_FUNC(0)
+				| IPSR_20_FUNC(0)
+				| IPSR_16_FUNC(0)
+				| IPSR_12_FUNC(0)	/* RX2_A */
+				| IPSR_8_FUNC(0)	/* TX2_A */
+				| IPSR_4_FUNC(0)	/* SCK2_A */ /* FIXME */
+				| IPSR_0_FUNC(0));
+	pfc_reg_write(PFC_IPSR13, IPSR_28_FUNC(0)
+				| IPSR_24_FUNC(0)
+				| IPSR_20_FUNC(0)
+				| IPSR_16_FUNC(4)	/* SDA1_B */
+				| IPSR_12_FUNC(4)	/* SCL1_B */
+				| IPSR_8_FUNC(0)	/* SSI_SDATA9 */ /* FIXME */
+				| IPSR_4_FUNC(1)	/* HTX2_A */
+				| IPSR_0_FUNC(1));	/* HRX2_A */
+	pfc_reg_write(PFC_IPSR14, IPSR_28_FUNC(0)	/* SSI_SCK5 */ /* FIXME */
+				| IPSR_24_FUNC(0)	/* SSI_SDATA4 */
+				| IPSR_20_FUNC(0)	/* SSI_SDATA3 */
+				| IPSR_16_FUNC(0)	/* SSI_WS349 */
+				| IPSR_12_FUNC(0)	/* SSI_SCK349 */
+				| IPSR_8_FUNC(0)
+				| IPSR_4_FUNC(0)	/* SSI_SDATA1 */
+				| IPSR_0_FUNC(0));	/* SSI_SDATA0 */
+	pfc_reg_write(PFC_IPSR15, IPSR_28_FUNC(0)	/* USB30_OVC */
+				| IPSR_24_FUNC(0)	/* USB30_PWEN */
+				| IPSR_20_FUNC(0)	/* AUDIO_CLKA */
+				| IPSR_16_FUNC(1)	/* HRTS2#_A */
+				| IPSR_12_FUNC(1)	/* HCTS2#_A */
+				| IPSR_8_FUNC(3)	/* TPU0TO1 */
+				| IPSR_4_FUNC(3)	/* TPU0TO0 */
+				| IPSR_0_FUNC(0));	/* SSI_WS5 */ /* FIXME */
+#else	// RZG_EK874
 	pfc_reg_write(PFC_IPSR0, IPSR_28_FUNC(0)	/* QSPI1_MISO/IO1 */
 			       | IPSR_24_FUNC(0)	/* QSPI1_MOSI/IO0 */
 			       | IPSR_20_FUNC(0)	/* QSPI1_SPCLK */
@@ -640,8 +791,226 @@ void pfc_init_e3(void)
 				| IPSR_8_FUNC(0)
 				| IPSR_4_FUNC(0)
 				| IPSR_0_FUNC(3));	/* USB0_OVC_B */
+#endif	// RZG_EK874
 
 	/* initialize GPIO/perihperal function select */
+#if RZG_EK874_EMMC
+	pfc_reg_write(PFC_GPSR0, GPSR0_SCL4
+			       | GPSR0_D15
+			       | GPSR0_D14
+			       | GPSR0_D13
+			       | GPSR0_D12
+			       | GPSR0_D11
+			       | GPSR0_D10
+			       | GPSR0_D9
+			       | GPSR0_D8
+			       | GPSR0_D7
+			       | GPSR0_D6
+			       | GPSR0_D5
+			       | GPSR0_D4 /* for EK874 */
+			       | GPSR0_D3
+			       | GPSR0_D2
+			       | GPSR0_D1
+			       | GPSR0_D0);
+	pfc_reg_write(PFC_GPSR1, GPSR1_WE0
+			       | GPSR1_CS0
+			       | GPSR1_A19
+			       | GPSR1_A18
+			       | GPSR1_A17
+			       | GPSR1_A16
+			       | GPSR1_A15
+			       | GPSR1_A14
+			       | GPSR1_A13
+			       | GPSR1_A12
+			       | GPSR1_A11
+			       | GPSR1_A10
+			       | GPSR1_A9
+			       | GPSR1_A8
+			       | GPSR1_A4
+			       | GPSR1_A3
+			       | GPSR1_A2
+			       | GPSR1_A1
+			       | GPSR1_A0);
+	pfc_reg_write(PFC_GPSR2, GPSR2_BIT27_REVERCED
+		               | GPSR2_BIT26_REVERCED
+			       | GPSR2_AVB_PHY_INT
+			       | GPSR2_AVB_TXCREFCLK
+			       | GPSR2_AVB_RD3
+			       | GPSR2_AVB_RD2
+			       | GPSR2_AVB_RD1
+			       | GPSR2_AVB_RD0
+			       | GPSR2_AVB_RXC
+			       | GPSR2_AVB_RX_CTL
+			       | GPSR2_RPC_RESET
+			       | GPSR2_RPC_RPC_INT
+			       | GPSR2_QSPI1_IO3
+			       | GPSR2_QSPI1_IO2
+			       | GPSR2_QSPI1_MISO_IO1
+			       | GPSR2_QSPI1_MOSI_IO0
+			       | GPSR2_QSPI0_SSL
+			       | GPSR2_QSPI0_IO3
+			       | GPSR2_QSPI0_IO2
+			       | GPSR2_QSPI0_MISO_IO1
+			       | GPSR2_QSPI0_MOSI_IO0
+			       | GPSR2_QSPI0_SPCLK);
+	pfc_reg_write(PFC_GPSR3, GPSR3_SD0_CD
+			       | GPSR3_SD1_DAT3
+			       | GPSR3_SD1_DAT2
+			       | GPSR3_SD1_DAT1
+			       | GPSR3_SD1_DAT0
+			       | GPSR3_SD1_CMD
+			       | GPSR3_SD1_CLK
+			       | GPSR3_SD0_DAT3
+			       | GPSR3_SD0_DAT2
+			       | GPSR3_SD0_DAT1
+			       | GPSR3_SD0_DAT0
+			       | GPSR3_SD0_CMD
+			       | GPSR3_SD0_CLK);
+	pfc_reg_write(PFC_GPSR4, GPSR4_SD3_DAT7
+			       | GPSR4_SD3_DAT6
+			       | GPSR4_SD3_DAT5
+			       | GPSR4_SD3_DAT4
+			       | GPSR4_SD3_DAT3
+			       | GPSR4_SD3_DAT2
+			       | GPSR4_SD3_DAT1
+			       | GPSR4_SD3_DAT0
+			       | GPSR4_SD3_CMD
+			       | GPSR4_SD3_CLK);
+	pfc_reg_write(PFC_GPSR5, GPSR5_MLB_SIG
+			       | GPSR5_MLB_CLK
+			       | GPSR5_SSI_SDATA9
+		               | GPSR5_MSIOF0_SS2
+			       | GPSR5_MSIOF0_SS1
+			       | GPSR5_MSIOF0_SYNC
+			       | GPSR5_MSIOF0_TXD
+			       | GPSR5_MSIOF0_RXD
+			       | GPSR5_MSIOF0_SCK
+			       | GPSR5_RX2_A
+			       | GPSR5_TX2_A
+			       | GPSR5_RTS0_A
+			       | GPSR5_SCK0_A);
+	pfc_reg_write(PFC_GPSR6, GPSR6_USB30_PWEN
+			       | GPSR6_SSI_SDATA6
+			       | GPSR6_SSI_WS6
+			       | GPSR6_SSI_SCK6
+			       | GPSR6_SSI_SDATA5
+			       | GPSR6_SSI_SCK5
+			       | GPSR6_SSI_SDATA4
+			       | GPSR6_USB30_OVC
+			       | GPSR6_AUDIO_CLKA
+			       | GPSR6_SSI_SDATA3
+			       | GPSR6_SSI_WS349
+			       | GPSR6_SSI_SCK349
+			       | GPSR6_SSI_SDATA0
+			       | GPSR6_SSI_WS01239
+			       | GPSR6_SSI_SCK01239);
+#elif RZG_EK874
+	pfc_reg_write(PFC_GPSR0, GPSR0_SCL4
+			       | GPSR0_D15
+			       | GPSR0_D14
+			       | GPSR0_D13
+			       | GPSR0_D12
+			       | GPSR0_D11
+			       | GPSR0_D10
+			       | GPSR0_D9
+			       | GPSR0_D8
+			       | GPSR0_D7
+			       | GPSR0_D6
+			       | GPSR0_D5
+			       | GPSR0_D4 /* for EK874 */
+			       | GPSR0_D3
+			       | GPSR0_D2
+			       | GPSR0_D1
+			       | GPSR0_D0);
+	pfc_reg_write(PFC_GPSR1, GPSR1_WE0
+			       | GPSR1_CS0
+			       | GPSR1_A19
+			       | GPSR1_A18
+			       | GPSR1_A17
+			       | GPSR1_A16
+			       | GPSR1_A15
+			       | GPSR1_A14
+			       | GPSR1_A13
+			       | GPSR1_A12
+			       | GPSR1_A11
+			       | GPSR1_A10
+			       | GPSR1_A9
+			       | GPSR1_A8
+			       | GPSR1_A4
+			       | GPSR1_A3
+			       | GPSR1_A2
+			       | GPSR1_A1
+			       | GPSR1_A0);
+	pfc_reg_write(PFC_GPSR2, GPSR2_BIT27_REVERCED
+		               | GPSR2_BIT26_REVERCED
+			       | GPSR2_AVB_PHY_INT
+			       | GPSR2_AVB_TXCREFCLK
+			       | GPSR2_AVB_RD3
+			       | GPSR2_AVB_RD2
+			       | GPSR2_AVB_RD1
+			       | GPSR2_AVB_RD0
+			       | GPSR2_AVB_RXC
+			       | GPSR2_AVB_RX_CTL
+			       | GPSR2_RPC_RESET
+			       | GPSR2_RPC_RPC_INT
+			       | GPSR2_QSPI1_IO3
+			       | GPSR2_QSPI1_IO2
+			       | GPSR2_QSPI1_MISO_IO1
+			       | GPSR2_QSPI1_MOSI_IO0
+			       | GPSR2_QSPI0_SSL
+			       | GPSR2_QSPI0_IO3
+			       | GPSR2_QSPI0_IO2
+			       | GPSR2_QSPI0_MISO_IO1
+			       | GPSR2_QSPI0_MOSI_IO0
+			       | GPSR2_QSPI0_SPCLK);
+	pfc_reg_write(PFC_GPSR3, GPSR3_SD0_CD
+			       | GPSR3_SD1_DAT3
+			       | GPSR3_SD1_DAT2
+			       | GPSR3_SD1_DAT1
+			       | GPSR3_SD1_DAT0
+			       | GPSR3_SD1_CMD
+			       | GPSR3_SD1_CLK
+			       | GPSR3_SD0_DAT3
+			       | GPSR3_SD0_DAT2
+			       | GPSR3_SD0_DAT1
+			       | GPSR3_SD0_DAT0
+			       | GPSR3_SD0_CMD
+			       | GPSR3_SD0_CLK);
+	pfc_reg_write(PFC_GPSR4, GPSR4_SD3_DAT3
+			       | GPSR4_SD3_DAT2
+			       | GPSR4_SD3_DAT1
+			       | GPSR4_SD3_DAT0
+			       | GPSR4_SD3_CMD
+			       | GPSR4_SD3_CLK);
+	pfc_reg_write(PFC_GPSR5, GPSR5_MLB_SIG
+			       | GPSR5_MLB_CLK
+			       | GPSR5_SSI_SDATA9
+		               | GPSR5_MSIOF0_SS2
+			       | GPSR5_MSIOF0_SS1
+			       | GPSR5_MSIOF0_SYNC
+			       | GPSR5_MSIOF0_TXD
+			       | GPSR5_MSIOF0_RXD
+			       | GPSR5_MSIOF0_SCK
+			       | GPSR5_RX2_A
+			       | GPSR5_TX2_A
+			       | GPSR5_RTS0_A
+			       | GPSR5_SCK0_A);
+	pfc_reg_write(PFC_GPSR6, GPSR6_USB30_PWEN
+			       | GPSR6_SSI_SDATA6
+			       | GPSR6_SSI_WS6
+			       | GPSR6_SSI_SCK6
+			       | GPSR6_SSI_SDATA5
+			       | GPSR6_SSI_SCK5
+			       | GPSR6_SSI_SDATA4
+			       | GPSR6_USB30_OVC
+			       | GPSR6_AUDIO_CLKA
+			       | GPSR6_SSI_SDATA3
+			       | GPSR6_SSI_WS349
+			       | GPSR6_SSI_SCK349
+			       | GPSR6_SSI_SDATA0
+			       | GPSR6_SSI_WS01239
+			       | GPSR6_SSI_SCK01239);
+#else	// RZG_EK874
 	pfc_reg_write(PFC_GPSR0, GPSR0_SCL4
 			       | GPSR0_D15
 			       | GPSR0_D11
@@ -749,8 +1118,29 @@ void pfc_init_e3(void)
 			       | GPSR6_SSI_SDATA0
 			       | GPSR6_SSI_WS01239
 			       | GPSR6_SSI_SCK01239);
+#endif	// RZG_EK874
 
 	/* initialize POC control */
+#if RZG_EK874_EMMC
+	reg = mmio_read_32(PFC_POCCTRL0);
+	reg = ((reg & POCCTRL0_MASK) | POC_SD3_CLK_33V
+				     | POC_SD1_DAT3_33V
+				     | POC_SD1_DAT2_33V
+				     | POC_SD1_DAT1_33V
+				     | POC_SD1_DAT0_33V
+				     | POC_SD1_CMD_33V
+				     | POC_SD1_CLK_33V
+				     | POC_SD0_DAT3_33V
+				     | POC_SD0_DAT2_33V
+				     | POC_SD0_DAT1_33V
+				     | POC_SD0_DAT0_33V
+				     | POC_SD0_CMD_33V
+				     | POC_SD0_CLK_33V);
+	pfc_reg_write(PFC_POCCTRL0, reg);
+	reg = mmio_read_32(PFC_POCCTRL2);
+	reg = (reg & POCCTRL2_MASK);
+	pfc_reg_write(PFC_POCCTRL2, reg);
+#elif RZG_EK874
 	reg = mmio_read_32(PFC_POCCTRL0);
 	reg = ((reg & POCCTRL0_MASK) | POC_SD1_DAT3_33V
 				     | POC_SD1_DAT2_33V
@@ -768,22 +1158,73 @@ void pfc_init_e3(void)
 	reg = mmio_read_32(PFC_POCCTRL2);
 	reg = (reg & POCCTRL2_MASK);
 	pfc_reg_write(PFC_POCCTRL2, reg);
+#else	// RZG_EK874
+	reg = mmio_read_32(PFC_POCCTRL0);
+	reg = ((reg & POCCTRL0_MASK) | POC_SD1_DAT3_33V
+				     | POC_SD1_DAT2_33V
+				     | POC_SD1_DAT1_33V
+				     | POC_SD1_DAT0_33V
+				     | POC_SD1_CMD_33V
+				     | POC_SD1_CLK_33V
+				     | POC_SD0_DAT3_33V
+				     | POC_SD0_DAT2_33V
+				     | POC_SD0_DAT1_33V
+				     | POC_SD0_DAT0_33V
+				     | POC_SD0_CMD_33V
+				     | POC_SD0_CLK_33V);
+	pfc_reg_write(PFC_POCCTRL0, reg);
+	reg = mmio_read_32(PFC_POCCTRL2);
+	reg = (reg & POCCTRL2_MASK);
+	pfc_reg_write(PFC_POCCTRL2, reg);
+#endif	// RZG_EK874
 
 	/* initialize LSI pin pull-up/down control */
+#if RZG_EK874_EMMC
+	pfc_reg_write(PFC_PUD0, 0x00080000U);
+	pfc_reg_write(PFC_PUD1, 0xCE398464U);
+	pfc_reg_write(PFC_PUD2, 0xA4C380F4U);
+	pfc_reg_write(PFC_PUD3, 0x001FF79FU);
+	pfc_reg_write(PFC_PUD4, 0xFFF0FFFFU);
+	pfc_reg_write(PFC_PUD5, 0x40000000U);
+#elif RZG_EK874
+	pfc_reg_write(PFC_PUD0, 0x00080000U);
+	pfc_reg_write(PFC_PUD1, 0xCE398464U);
+	pfc_reg_write(PFC_PUD2, 0xA4C380F4U);
+	pfc_reg_write(PFC_PUD3, 0x0000079FU);
+	pfc_reg_write(PFC_PUD4, 0xFFF0FFFFU);
+	pfc_reg_write(PFC_PUD5, 0x40000000U);
+#else	// RZG_EK874
 	pfc_reg_write(PFC_PUD0, 0xFDF80000U);
 	pfc_reg_write(PFC_PUD1, 0xCE298464U);
 	pfc_reg_write(PFC_PUD2, 0xA4C380F4U);
 	pfc_reg_write(PFC_PUD3, 0x0000079FU);
 	pfc_reg_write(PFC_PUD4, 0xFFF0FFFFU);
 	pfc_reg_write(PFC_PUD5, 0x40000000U);
+#endif	// RZG_EK874
 
 	/* initialize LSI pin pull-enable register */
+#if RZG_EK874_EMMC
+	pfc_reg_write(PFC_PUEN0, 0x00000000U);
+	pfc_reg_write(PFC_PUEN1, 0x00300000U);
+	pfc_reg_write(PFC_PUEN2, 0x00400074U);
+	pfc_reg_write(PFC_PUEN3, 0x001FF800U);
+	pfc_reg_write(PFC_PUEN4, 0x07900600U);
+	pfc_reg_write(PFC_PUEN5, 0x00000000U);
+#elif RZG_EK874
+	pfc_reg_write(PFC_PUEN0, 0x00000000U);
+	pfc_reg_write(PFC_PUEN1, 0x00300000U);
+	pfc_reg_write(PFC_PUEN2, 0x00400074U);
+	pfc_reg_write(PFC_PUEN3, 0x00000000U);
+	pfc_reg_write(PFC_PUEN4, 0x07900600U);
+	pfc_reg_write(PFC_PUEN5, 0x00000000U);
+#else	// RZG_EK874
 	pfc_reg_write(PFC_PUEN0, 0xFFF00000U);
 	pfc_reg_write(PFC_PUEN1, 0x00000000U);
 	pfc_reg_write(PFC_PUEN2, 0x00000004U);
 	pfc_reg_write(PFC_PUEN3, 0x00000000U);
 	pfc_reg_write(PFC_PUEN4, 0x07800010U);
 	pfc_reg_write(PFC_PUEN5, 0x00000000U);
+#endif	// RZG_EK874
 
 	/* initialize positive/negative logic select */
 	mmio_write_32(GPIO_POSNEG0, 0x00000000U);
@@ -795,6 +1236,15 @@ void pfc_init_e3(void)
 	mmio_write_32(GPIO_POSNEG6, 0x00000000U);
 
 	/* initialize general IO/interrupt switching */
+#if RZG_EK874
+	mmio_write_32(GPIO_IOINTSEL0, 0x00000000U);
+	mmio_write_32(GPIO_IOINTSEL1, 0x00000000U);
+	mmio_write_32(GPIO_IOINTSEL2, 0x00000000U);
+	mmio_write_32(GPIO_IOINTSEL3, 0x00000000U);
+	mmio_write_32(GPIO_IOINTSEL4, 0x00000000U);
+	mmio_write_32(GPIO_IOINTSEL5, 0x00000000U);
+	mmio_write_32(GPIO_IOINTSEL6, 0x00000000U);
+#else	// RZG_EK874
 	mmio_write_32(GPIO_IOINTSEL0, 0x00020000U);
 	mmio_write_32(GPIO_IOINTSEL1, 0x00000000U);
 	mmio_write_32(GPIO_IOINTSEL2, 0x00000000U);
@@ -802,16 +1252,36 @@ void pfc_init_e3(void)
 	mmio_write_32(GPIO_IOINTSEL4, 0x00000000U);
 	mmio_write_32(GPIO_IOINTSEL5, 0x00000000U);
 	mmio_write_32(GPIO_IOINTSEL6, 0x00000000U);
+#endif	// RZG_EK874
 
 	/* initialize general output register */
+#if RZG_EK874
+	mmio_write_32(GPIO_OUTDT0, 0x00000000U);
+	mmio_write_32(GPIO_OUTDT1, 0x00000000U);
+	mmio_write_32(GPIO_OUTDT2, 0x00000000U);
+	mmio_write_32(GPIO_OUTDT3, 0x00006000U);
+	mmio_write_32(GPIO_OUTDT5, 0x00000000U);
+	mmio_write_32(GPIO_OUTDT6, 0x00000000U);
+#else	// RZG_EK874
 	mmio_write_32(GPIO_OUTDT0, 0x00000010U);
 	mmio_write_32(GPIO_OUTDT1, 0x00100000U);
 	mmio_write_32(GPIO_OUTDT2, 0x00000000U);
 	mmio_write_32(GPIO_OUTDT3, 0x00008000U);
 	mmio_write_32(GPIO_OUTDT5, 0x00060000U);
 	mmio_write_32(GPIO_OUTDT6, 0x00000000U);
+#endif	// RZG_EK874
 
 	/* initialize general input/output switching */
+#if RZG_EK874
+	/* initialize general input/output switching */
+	mmio_write_32(GPIO_INOUTSEL0, 0x00020000U);
+	mmio_write_32(GPIO_INOUTSEL1, 0x00100000U);
+	mmio_write_32(GPIO_INOUTSEL2, 0x03000000U);
+	mmio_write_32(GPIO_INOUTSEL3, 0x0000E000U);
+	mmio_write_32(GPIO_INOUTSEL4, 0x00000440U);
+	mmio_write_32(GPIO_INOUTSEL5, 0x00080000U);
+	mmio_write_32(GPIO_INOUTSEL6, 0x00000010U);
+#else	// RZG_EK874
 	mmio_write_32(GPIO_INOUTSEL0, 0x00000010U);
 	mmio_write_32(GPIO_INOUTSEL1, 0x00100020U);
 	mmio_write_32(GPIO_INOUTSEL2, 0x03000000U);
@@ -819,4 +1289,5 @@ void pfc_init_e3(void)
 	mmio_write_32(GPIO_INOUTSEL4, 0x00000000U);
 	mmio_write_32(GPIO_INOUTSEL5, 0x00060000U);
 	mmio_write_32(GPIO_INOUTSEL6, 0x00004000U);
+#endif	// RZG_EK874
 }

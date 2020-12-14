@@ -134,6 +134,9 @@ void qos_init_m3_v11(void)
  #endif
 #elif (RCAR_DRAM_SPLIT == RCAR_DRAM_SPLIT_2CH) || \
 	(RCAR_DRAM_SPLIT == RCAR_DRAM_SPLIT_AUTO)
+#if RZG_DRAM_HIHOPE_RZG2M_ECC
+	NOTICE("BL2: DRAM Split not supported when ECC enabled\n");
+#else
 	NOTICE("BL2: DRAM Split is 2ch\n");
 	io_write_32(AXI_ADSPLCR0, 0x00000000U);
 	io_write_32(AXI_ADSPLCR1, ADSPLCR0_ADRMODE_DEFAULT
@@ -142,6 +145,7 @@ void qos_init_m3_v11(void)
 				  | ADSPLCR0_SWP);
 	io_write_32(AXI_ADSPLCR2, 0x00001004U);
 	io_write_32(AXI_ADSPLCR3, 0x00000000U);
+#endif
 #else
 	NOTICE("BL2: DRAM Split is OFF\n");
 #endif

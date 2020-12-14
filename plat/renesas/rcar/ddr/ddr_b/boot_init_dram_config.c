@@ -4,14 +4,52 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include <mmio.h>
+#include "../../rcar_def.h"
+
 /*******************************************************************************
  *	NUMBER OF BOARD CONFIGRATION
  *	PLEASE DEFINE
  ******************************************************************************/
-#define BOARDNUM 22
+#define BOARDNUM 27
 /*******************************************************************************
  *	PLEASE SET board number or board judge function
  ******************************************************************************/
+#if (RZG_HIHOPE_RZG2M) // RZG_HIHOPE_RZG2M
+#define	GPIO_INDT5	0xE605500C
+#define	LPDDR4_2RANK	(0x01 << 25)
+
+static uint32_t boardcnf_get_brd_type(void){
+	uint32_t reg;
+	uint32_t boardInfo;
+
+	reg = mmio_read_32(RCAR_PRR);
+	if (RCAR_M3_CUT_VER11 == (reg & RCAR_CUT_MASK))
+	{
+		return (23);
+	}
+	else
+	{
+		boardInfo = mmio_read_32(GPIO_INDT5);
+		if (boardInfo & LPDDR4_2RANK)
+		{
+			return (23);
+		}
+		else
+		{
+			return (22);
+		}
+	}
+}
+#elif (RZG_HIHOPE_RZG2N) // RZG_HIHOPE_RZG2N
+static uint32_t boardcnf_get_brd_type(void){
+	return (24);
+}
+#elif (RZG_HIHOPE_RZG2H) // RZG_HIHOPE_RZG2H
+static uint32_t boardcnf_get_brd_type(void){
+	return (26);
+}
+#else
 #define BOARD_JUDGE_AUTO
 #ifdef BOARD_JUDGE_AUTO
 static uint32_t _board_judge(void);
@@ -25,6 +63,7 @@ static uint32_t boardcnf_get_brd_type(void)
 		return 1;
 }
 #endif /* BOARD_JUDGE_AUTO */
+#endif // RZG_HIHOPE_RZG2M
 
 /*******************************************************************************
  *	Set DRAM ODT , VREFca , Derating  condtition
@@ -1614,7 +1653,332 @@ static const struct _boardcnf boardcnfs[BOARDNUM] = {
 			  0, 0, 0, 0, 0, 0, 0, 0 }
 		}
 	}
-}
+},
+/*
+ * boardcnf[22] Jiangsu HopeRun Software Co., Ltd. HiHope RZ/G2M board 16Gbit/1rank/2ch board with G2M/SOC
+ */
+{
+	0x03,		/* phyvalid */
+	0x01,		/* dbi_en */
+	0x02c0,		/* cacs_dly */
+	0,		/* cacs_dly_adj */
+	0x0300,		/* dqdm_dly_w */
+	0x00a0,		/* dqdm_dly_r */
+	{
+/*ch[0]*/	{
+/*ddr_density[]*/	{ 0x04, 0xff },
+/*ca_swap*/		0x00345201,
+/*dqs_swap*/		0x3201,
+/*dq_swap[]*/		{ 0x01672543, 0x45361207, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		},
+/*ch[1]*/	{
+/*ddr_density[]*/	{ 0x04, 0xff },
+/*ca_swap*/		0x00302154,
+/*dqs_swap*/		0x2310,
+/*dq_swap[]*/		{ 0x01672543, 0x45361207, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		}
+	}
+},
+/*
+ * boardcnf[23] Jiangsu HopeRun Software Co., Ltd. HiHope RZ/G2M board 8Gbit/2rank/2ch board with G2M/SOC
+ */
+{
+	0x03,		/* phyvalid */
+	0x01,		/* dbi_en */
+	0x02c0,		/* cacs_dly */
+	0,		/* cacs_dly_adj */
+	0x0300,		/* dqdm_dly_w */
+	0x00a0,		/* dqdm_dly_r */
+	{
+/*ch[0]*/	{
+/*ddr_density[]*/	{ 0x02, 0x02 },
+/*ca_swap*/		0x00345201,
+/*dqs_swap*/		0x3201,
+/*dq_swap[]*/		{ 0x01672543, 0x45361207, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		},
+/*ch[1]*/	{
+/*ddr_density[]*/	{ 0x02, 0x02 },
+/*ca_swap*/		0x00302154,
+/*dqs_swap*/		0x2310,
+/*dq_swap[]*/		{ 0x01672543, 0x45361207, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		}
+	}
+},
+/*
+ * boardcnf[24] Jiangsu HopeRun Software Co., Ltd. HiHope RZ/G2N board 16Gbit/2rank/1ch board with G2N/SOC
+ */
+{
+	0x01,		/* phyvalid */
+	0x01,		/* dbi_en */
+	0x0300,		/* cacs_dly */
+	0,		/* cacs_dly_adj */
+	0x0300,		/* dqdm_dly_w */
+	0x00a0,		/* dqdm_dly_r */
+	{
+/*ch[0]*/	{
+/*ddr_density[]*/	{ 0x04, 0x04 },
+/*ca_swap*/		0x00345201,
+/*dqs_swap*/		0x3201,
+/*dq_swap[]*/		{ 0x01672543, 0x45361207, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		}
+	}
+},
+/*
+ * boardcnf[25] Jiangsu HopeRun Software Co., Ltd. HiHope RZ/G2H board 8Gbit/2rank/2ch board with G2H/SOC
+ */
+{
+	0x05,		/* phyvalid */
+	0x01,		/* dbi_en */
+	0x0300,		/* cacs_dly */
+	0,		/* cacs_dly_adj */
+	0x0300,		/* dqdm_dly_w */
+	0x00a0,		/* dqdm_dly_r */
+	{
+/*ch[0]*/	{
+/*ddr_density[]*/	{ 0x02, 0x02 },
+/*ca_swap*/		0x00345201,
+/*dqs_swap*/		0x3201,
+/*dq_swap[]*/		{ 0x01672543, 0x45367012, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		},
+/*ch[1]*/	{	// for DRAM_SPLIT_2CH
+/*ddr_density[]*/	{ 0x02, 0x02 },
+/*ca_swap*/		0x00302154,
+/*dqs_swap*/		0x2310,
+/*dq_swap[]*/		{ 0x01672543, 0x45361207, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		},
+/*ch[2]*/	{	// for DRAM_SPLIT_NON
+/*ddr_density[]*/	{ 0x02, 0x02 },
+/*ca_swap*/		0x00302154,
+/*dqs_swap*/		0x2310,
+/*dq_swap[]*/		{ 0x01672543, 0x45361207, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		},
+/*ch[3]*/	{ // Dummy
+/*ddr_density[]*/	{ 0xff, 0xff },
+/*ca_swap*/		0,
+/*dqs_swap*/		0,
+/*dq_swap[]*/		{ 0, 0, 0, 0 },
+/*dm_swap[]*/		{ 0, 0, 0, 0 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		}
+	}
+},
+/*
+ * boardcnf[26] Jiangsu HopeRun Software Co., Ltd. HiHope RZ/G2H board 16Gbit/1rank/2ch board with G2H/SOC
+ */
+{
+	0x05,		/* phyvalid */
+	0x01,		/* dbi_en */
+	0x0300,		/* cacs_dly */
+	0,		/* cacs_dly_adj */
+	0x0300,		/* dqdm_dly_w */
+	0x00a0,		/* dqdm_dly_r */
+	{
+/*ch[0]*/	{
+/*ddr_density[]*/	{ 0x04, 0xff },
+/*ca_swap*/		0x00345201,
+/*dqs_swap*/		0x3201,
+/*dq_swap[]*/		{ 0x01672543, 0x45367012, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		},
+/*ch[1]*/	{	// for DRAM_SPLIT_2CH
+/*ddr_density[]*/	{ 0x04, 0xff },
+/*ca_swap*/		0x00302154,
+/*dqs_swap*/		0x2310,
+/*dq_swap[]*/		{ 0x01672543, 0x45361207, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		},
+/*ch[2]*/	{	// for DRAM_SPLIT_NON
+/*ddr_density[]*/	{ 0x04, 0xff },
+/*ca_swap*/		0x00302154,
+/*dqs_swap*/		0x2310,
+/*dq_swap[]*/		{ 0x01672543, 0x45361207, 0x45632107, 0x60715234 },
+/*dm_swap[]*/		{ 0x08, 0x08, 0x08, 0x08 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		},
+/*ch[3]*/	{ // Dummy
+/*ddr_density[]*/	{ 0xff, 0xff },
+/*ca_swap*/		0,
+/*dqs_swap*/		0,
+/*dq_swap[]*/		{ 0, 0, 0, 0 },
+/*dm_swap[]*/		{ 0, 0, 0, 0 },
+/*wdqlvl_patt[]*/	WDQLVL_PAT,
+/*cacs_adj*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0 },
+/*dm_adj_w*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_w*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 },
+/*dm_adj_r*/		{ 0, 0, 0, 0 },
+/*dqdm_adj_r*/		{ 0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0,
+			  0, 0, 0, 0, 0, 0, 0, 0 }
+		}
+	}
+},
 };
 
 /*******************************************************************************

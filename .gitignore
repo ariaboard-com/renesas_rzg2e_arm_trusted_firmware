@@ -24,3 +24,9 @@ GPATH
 GRTAGS
 GSYMS
 GTAGS
+
+deploy/
+tools/dummy_create/*.bin
+tools/dummy_create/*.elf
+tools/dummy_create/*.srec
+tools/dummy_create/*.map

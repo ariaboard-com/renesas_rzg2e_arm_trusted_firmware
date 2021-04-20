@@ -5,7 +5,8 @@ export WORKDIR="$(pwd)"
 export PATH="${WORKDIR}/../gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin:$PATH"
 
 if [ x"$1" = x"mrprober" ]; then
-   rm -rf build
+   rm -rf build 2>/dev/null || true
+   make distclean
 fi
 
 if [ ! -d build ]; then
@@ -16,10 +17,10 @@ ATFW_OPT_r8a774c0='LSI=G2E RCAR_SA0_SIZE=0 RCAR_AVS_SETTING_ENABLE=0 RZG_EK874=1
 
 make O=build PLAT=rcar ${ATFW_OPT_r8a774c0} bl2 bl31 dummytool
 
-rm -rf deploy 2>/dev/null || true
-mkdir deploy
+rm -rf deploy/g2e-emmc 2>/dev/null || true
+mkdir -p deploy/g2e-emmc
 
-cp -v build/rcar/release/bl2.srec deploy/bl2.srec
-cp -v build/rcar/release/bl31.srec deploy/bl31.srec
-cp -v tools/dummy_create/bootparam_sa0.srec deploy/bootparam_sa0.srec
-cp -v tools/dummy_create/cert_header_sa6.srec deploy/cert_header_sa6.srec
+cp -v build/rcar/release/bl2.srec deploy/g2e-emmc/bl2.srec
+cp -v build/rcar/release/bl31.srec deploy/g2e-emmc/bl31.srec
+cp -v tools/dummy_create/bootparam_sa0.srec deploy/g2e-emmc/bootparam_sa0.srec
+cp -v tools/dummy_create/cert_header_sa6.srec deploy/g2e-emmc/cert_header_sa6.srec
